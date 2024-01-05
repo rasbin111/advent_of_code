@@ -3,6 +3,6 @@
 !*.c
 
 !*.txt
-!code_lab/**
+!code_lab/
 
 
