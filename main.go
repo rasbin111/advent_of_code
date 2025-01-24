@@ -1,5 +1,6 @@
 package main
 
 func main() {
-	d1()
+	// d1()
+    d2()
 }
