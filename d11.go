@@ -5,7 +5,7 @@ import (
 	"sort"
 )
 
-func d1() {
+func d11() {
 	var arr1, arr2 []int
 
 	file_data_to_arrays(&arr1, &arr2)
