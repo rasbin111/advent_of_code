@@ -3,12 +3,13 @@ package main
 import (
 	"fmt"
 	"sort"
+    "advent_of_code/utils"
 )
 
 func d11() {
 	var arr1, arr2 []int
 
-	file_data_to_arrays(&arr1, &arr2)
+	utils.File_data_to_arrays(&arr1, &arr2)
 
 	sort.Ints(arr1)
 	sort.Ints(arr2)

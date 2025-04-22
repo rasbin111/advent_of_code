@@ -1,9 +1,13 @@
 package main
-import "fmt"
+
+import (
+    "fmt"
+    "advent_of_code/utils"
+)
 
 func d12() {
 	var arr1, arr2 []int
-	file_data_to_arrays(&arr1, &arr2)
+	utils.File_data_to_arrays(&arr1, &arr2)
     valueCountMap := make(map[int]int)
     var similarity_score = 0
     for _, v1 := range arr1{

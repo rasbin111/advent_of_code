@@ -1,6 +1,8 @@
 package main
 
 func main() {
-	// d1()
-    d2()
+	// d11()
+	// d12()
+	// d21()
+	d22()
 }

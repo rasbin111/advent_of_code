@@ -1,4 +1,4 @@
-package main
+package utils 
 
 import (
 	"bufio"
@@ -8,9 +8,9 @@ import (
 	"strings"
 )
 
-func file_data_to_arrays(arr1 *[]int, arr2 *[]int) {
+func File_data_to_arrays(arr1 *[]int, arr2 *[]int) {
 
-	file, err := os.Open("./d1_input_data.txt")
+	file, err := os.Open("./inputs/d1_input_data.txt")
 	defer file.Close()
 
 	if err != nil {
