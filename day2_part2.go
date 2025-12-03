@@ -10,7 +10,8 @@ import (
 
 func patternValidityCheckR2(num int64) bool {
 
-	numOfDigits := len(strconv.FormatInt(num, 10))
+	numString := strconv.FormatInt(num, 10)
+	numOfDigits := len(numString)
 
 	if numOfDigits == 1 {
 		return false
@@ -19,10 +20,32 @@ func patternValidityCheckR2(num int64) bool {
 	halfND := numOfDigits / 2
 	factor := int64(math.Pow(10, float64(halfND)))
 
-	if num%factor == num/factor {
-		return true
+	if numOfDigits%2 == 0 {
+
+		if num%factor == num/factor {
+			return true
+		}
 	}
 
+	for i := 1; i <= halfND; i++ {
+		if numOfDigits%i == 0 {
+
+			pattern := numString[:i]
+			isRepeating := true
+
+			for j := i; j < numOfDigits; j += i {
+				matchingPattern := numString[j : i+j]
+				if matchingPattern != pattern {
+					isRepeating = false
+					break
+				}
+			}
+			if isRepeating {
+				return true
+			}
+		}
+
+	}
 	return false
 }
 
@@ -59,6 +82,6 @@ func Day2Part2() {
 		sumOfAllRanges += repeatedNumberSum2(record)
 	}
 
-	fmt.Println("Total invalid ids: ", sumOfAllRanges)
+	fmt.Println("Total invalid ids: ", sumOfAllRanges) // answer: 20942028255
 
 }
