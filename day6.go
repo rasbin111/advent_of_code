@@ -28,7 +28,7 @@ func readFile2SlNS(filepath string) [][]string {
 	return lines
 }
 
-func readFile2SlWithSpaceStr(filepath string, numStrings int) [][]string {
+func readFile2SlWithSpaceStr(filepath string, maxDigits int) [][]string {
 	file, err := os.Open(filepath)
 
 	if err != nil {
@@ -41,10 +41,27 @@ func readFile2SlWithSpaceStr(filepath string, numStrings int) [][]string {
 
 	for scanner.Scan() {
 		line := scanner.Text()
-		lineSlice := strings.SplitN(line, " ", numStrings)
-		lines = append(lines, lineSlice)
+		row := []string{}
+		for i := 0; i <= len(line)-maxDigits; i = i + maxDigits + 1 {
+			num := line[i : i+maxDigits]
+			row = append(row, num)
+		}
+		lines = append(lines, row)
 	}
 	return lines
+}
+
+func maxLengthOfNum(lines [][]string) int {
+	maxLen := len(lines[0][0])
+
+	for i := range lines {
+		for j := range lines[0] {
+			if maxLen < len(lines[i][j]) {
+				maxLen = len(lines[i][j])
+			}
+		}
+	}
+	return maxLen
 }
 
 func D6P1(grid [][]string) {
@@ -79,66 +96,38 @@ func D6P1(grid [][]string) {
 	fmt.Println("Total amount: ", totalCalc)
 }
 
-func D6P2(numStrings int) {
+func D6P2(maxDigits int) {
 
-	grid := readFile2SlWithSpaceStr("inputs/day6.txt", numStrings)
-	totalCalc := 0
-	for i := numStrings - 1; i >= 0; i-- {
-		calc := 0
-		maxIndRow := len(grid) - 1
-		// col := strings.TrimSpace(grid[maxIndRow][i])
+	grid := readFile2SlWithSpaceStr("inputs/day6.txt", maxDigits)
+	fmt.Println(grid)
+	nums := make([]int, len(grid[0]))
+	_ = nums
+	for j := len(grid[0]) - 1; j >= 0; j-- {
+		lastRowIdx := len(grid) - 1
+		symbol := grid[lastRowIdx][j]
+		// fmt.Println("Symbol: ", symbol)
+		// countTotalNums := len(grid[0][j])
+		tempNums := make([]int64, maxDigits)
+		// _ = tempNums
+		_ = symbol
+		num := 0
+		for i := 0; i < len(grid)-1; i++ {
+			num := grid[i][j]
+			for d := 0; d < maxDigits; d++ {
+				n, err := strconv.ParseInt(string(num[d]), 10, 64)
 
-		maxLen := len(grid[0][i])
-		for _, row := range grid[1:maxIndRow] {
-			if len(row[i]) > maxLen {
-				maxLen = len(row[i])
+				if err != nil {
+					log.Fatal(err)
+				}
+				num := n
 			}
 		}
-
-		nums := [][]string{}
-
-		for ilx := range maxLen {
-			_ = ilx
-			dNums := make([]string, maxIndRow)
-			nums = append(nums, dNums)
-
-		}
-
-		for j, row := range grid[:maxIndRow] {
-			selectedNum := row[i]
-			// lenItem := len(selectedNum)
-			digitsSlice := strings.Split(selectedNum, "")
-
-			for li := range len(selectedNum) {
-
-				nums[li][j] = digitsSlice[li]
-				// nums[li][j] = digitsSlice[lenItem-li-1]
-				// nums[maxLen-li-1][j] = digitsSlice[li]
-			}
-		}
-		fmt.Println(nums)
-
-		// switch col {
-		// case "*":
-		// 	calc = 1
-
-		// 	for i, num := range nums {
-		// 		calc *= num
-		// 	}
-
-		// case "+":
-		// 	for i, num := range nums {
-		// 		calc += num
-		// 	}
-		// }
-
-		totalCalc += calc
 	}
-	fmt.Println("Total amount: ", totalCalc)
+	// fmt.Println("Total amount: ", totalCalc)
 }
 
 func Day6() {
 	grid := readFile2SlNS("inputs/day6.txt")
-	// D6P1(grid)
-	D6P2(len(grid[0]))
+	maxDigits := maxLengthOfNum(grid)
+	D6P2(maxDigits)
 }
