@@ -172,5 +172,6 @@ func D6P2(maxSizes []int) {
 func Day6() {
 	grid := readFile2SlNS("inputs/day6.txt")
 	maxSizes := maxLengthOfNum(grid)
+	D6P1(grid)
 	D6P2(maxSizes)
 }
