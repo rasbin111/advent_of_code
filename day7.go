@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"slices"
 	"strings"
 )
 
@@ -34,23 +33,38 @@ func readFile2Arr(filepath string) ([][]string, int) {
 	return lines, strings.Index(firstLine, "S")
 }
 
+func uniqueInts(input []int) []int {
+	seen := make(map[int]bool)
+	result := []int{}
+
+	for _, v := range input {
+		if !seen[v] {
+			seen[v] = true
+			result = append(result, v)
+		}
+	}
+	return result
+}
+
 func D7P1(grid [][]string, startPos int) {
 	numOfSplits := 0
 	splitPos := []int{startPos}
 	for _, val := range grid[1:] {
+		collisions := []int{}
 		for j, fv := range val {
 			if "^" == fv {
 				for si, sp := range splitPos {
 					if j == sp {
-						numOfSplits += 1
+						collisions = append(collisions, j)
 						splitPos = append(splitPos[:si], splitPos[si+1:]...)
 						splitPos = append(splitPos, j-1)
 						splitPos = append(splitPos, j+1)
-						splitPos = slices.Compact(splitPos)
+						splitPos = uniqueInts(splitPos)
 					}
 				}
 			}
 		}
+		numOfSplits += len(collisions)
 	}
 	fmt.Println("Number of splits: ", numOfSplits)
 }
